@@ -1,0 +1,4 @@
+nextNEOpi/
+.nextflow.log
+slurm-*.out
+*.gz

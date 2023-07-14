@@ -1,0 +1,35 @@
+name: Run
+
+on:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 0 20 * *"
+
+jobs:
+
+  check_build:
+
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Need older version, as Nextflow DSL1 is used
+      - uses: nf-core/setup-nextflow@v1
+        with:
+          version: 22.10.8 
+
+      - uses: eWaterCycle/setup-singularity@v7
+        with:
+          # Pick the latest version at https://github.com/eWaterCycle/singularity-versions/releases
+          singularity-version: 3.8.3
+
+      - name: Run
+        run: ./scripts/run.sh
+
+      - name: View log
+        run: cat nextflow.log
+
