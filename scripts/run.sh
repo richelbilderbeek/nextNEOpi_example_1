@@ -17,12 +17,13 @@ if [ ! -d nextNEOpi ]; then
   git clone https://github.com/icbi-lab/nextNEOpi
 fi
 
-# Download the data
-exit
-if [ ! -d nextNEOpi/resources/references/hg38/gdc/GRCh38.d1.vd1/fasta ]; then
-  ./scripts/download_references.sh
+if [[ -z "GITHUB_ACTIONS" ]]; then
+  echo "Cannot download the data, will skip"
+else
+  if [ ! -d nextNEOpi/resources/references/hg38/gdc/GRCh38.d1.vd1/fasta ]; then
+    ./scripts/download_references.sh
+  fi
 fi
-
 
 # Copy sensitive data into the expected names
 #
