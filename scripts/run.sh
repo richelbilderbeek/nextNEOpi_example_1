@@ -18,10 +18,13 @@ if [ ! -d nextNEOpi ]; then
 fi
 
 if [[ -z "GITHUB_ACTIONS" ]]; then
-  echo "Cannot download the data, will skip"
+  if [ ! -d nextNEOpi/resources/references/hg38/gdc/GRCh38.d1.vd1/fasta ]; then
+    ./scripts/create_fake_references.sh
+  fi
 else
   if [ ! -d nextNEOpi/resources/references/hg38/gdc/GRCh38.d1.vd1/fasta ]; then
-    ./scripts/download_references.sh
+    ./scripts/create_fake_references.sh
+    # ./scripts/download_references.sh
   fi
 fi
 
