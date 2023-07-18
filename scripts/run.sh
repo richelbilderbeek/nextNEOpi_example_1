@@ -7,6 +7,34 @@
 #   ./scripts/run.sh
 #
 
+if [ "$#" -eq 0 ]; then
+  echo "No arguments given, using original GitHub repo"
+  github_url=https://github.com/icbi-lab/nextNEOpi
+elif [ "$#" -eq 1 ]; then
+  if [ "$1" == "original" ]; then
+    echo "Using original GitHub repo"
+    github_url=https://github.com/icbi-lab/nextNEOpi
+  elif [ "$1" == "fork" ]; then
+    echo "Using forked GitHub repo"
+    github_url=https://github.com/richelbilderbeek/nextNEOpi
+  else
+  echo "Please use a correct argument:"
+  echo ""
+  echo "  ./script/run.sh original"
+  echo "  ./script/run.sh fork"
+  echo ""
+  echo "Argument given: $1"
+  fi
+else
+  echo "Too many arguments given, please use one of these: "
+  echo ""
+  echo "  ./script/run.sh"
+  echo "  ./script/run.sh original"
+  echo "  ./script/run.sh fork"
+fi
+
+echo "github_url: ${github_url}"
+
 export JAVA_HOME=$(readlink -f `which javac` | sed "s:/bin/javac::")
 echo "JAVA_HOME: ${JAVA_HOME}"
 export JAVA_CMD="${JAVA_HOME}/bin/java"
@@ -14,7 +42,7 @@ echo "JAVA_CMD: ${JAVA_CMD}"
 
 # Clone the repository
 if [ ! -d nextNEOpi ]; then
-  git clone https://github.com/icbi-lab/nextNEOpi
+  git clone $github_url
 fi
 
 if [[ -z "GITHUB_ACTIONS" ]]; then
@@ -55,7 +83,8 @@ cd nextNEOpi
 
 NXF_VER=22.10.8
 
-nextflow run nextNEOpi.nf --batchFile example_batchfile.csv \
+nextflow run nextNEOpi.nf \
+  --batchFile example_batchfile.csv \
   -profile singularity \
   -config conf/params.config \
   --exomeCaptureKit "Twist" \

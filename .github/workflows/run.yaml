@@ -27,9 +27,11 @@ jobs:
           # Pick the latest version at https://github.com/eWaterCycle/singularity-versions/releases
           singularity-version: 3.8.3
 
-      - name: Run
-        run: ./scripts/run.sh
+      - name: Run with the original version
+        run: ./scripts/run.sh original || true
 
       - name: View log
         run: cat nextflow.log
 
+      - name: Run with the forked version
+        run: ./scripts/run.sh fork || true
