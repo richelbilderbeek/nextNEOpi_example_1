@@ -31,7 +31,13 @@ jobs:
         run: ./scripts/run.sh original || true
 
       - name: View log
-        run: cat nextflow.log
+        run: cat nextflow.log || true
+
+      - name: Cleanup
+        run: rm -rf nextNEOpi
 
       - name: Run with the forked version
         run: ./scripts/run.sh fork || true
+
+      - name: View log
+        run: cat nextflow.log || true
